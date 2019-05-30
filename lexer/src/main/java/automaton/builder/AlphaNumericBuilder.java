@@ -2,9 +2,6 @@ package automaton.builder;
 
 import automaton.LexerAutomatonState;
 import automaton.LexerContext;
-import token.InputRange;
-import token.RealToken;
-import token.Token;
 import token.TokenType;
 
 import java.util.Arrays;
@@ -22,23 +19,38 @@ public class AlphaNumericBuilder extends AbstractLexerState {
 
     @Override
     public LexerAutomatonState next(Character c) {
-        if(ctx.getAccum().isEmpty() && Character.isDigit(c)){
-            return new AlphaNumericBuilder(ctx.newChar(c)); //TODO levar a NumberLiteral
+        String currentAccum = ctx.getAccum() + c;
+        if(Arrays.asList(';', ':', '\n', '\t', ' ', '=', '+', '-', '*', '/', '(', ')').contains(c)){
+            return new SingleCharBuilder(ctx.resetAccum().addChar(c));
         }
-        else if(Arrays.asList(';', ':', '\n', '\t').contains(c)){
-            return new SingleCharBuilder(ctx.resetAccum().newChar(c));
+        else if(currentAccum.matches("\\d+")){ //is a number
+            return new AlphaNumericBuilder(ctx.addChar(c)); //TODO levar a NumberLiteral
         }
-        else if (!Character.isAlphabetic(c) || !Character.isDigit(c)) {
-            return new AlphaNumericBuilder(ctx.newChar(c)); //TODO llevar a Unkown
+        else if(currentAccum.startsWith("\"")) {
+            return new SingleCharBuilder(ctx.addChar(c)); //TODO llevar a StringLiteral
+        }
+        else if (currentAccum.matches("[A-Za-z0-9]+")) {
+            return new AlphaNumericBuilder(ctx.addChar(c));
         }
         else {
-            this.ctx = ctx.newChar(c);
-            return this;
+            return new AlphaNumericBuilder(ctx.addChar(c)); //TODO llevar a UNKOWN
         }
     }
 
     @Override
     public TokenType obtainTokenType() {
-        return TokenType.IDENTIFIER; //TODO cheaquear todos los casos
+        switch (ctx.getAccum()) {
+            case "let":
+                return TokenType.LET;
+            case "string":
+                return TokenType.STRING_TYPE;
+            case "number":
+                return TokenType.NUMBER_TYPE;
+            case "print":
+                return TokenType.PRINT;
+            default:
+                return TokenType.IDENTIFIER;
+
+        }
     }
 }

@@ -23,7 +23,7 @@ public class LexerContext {
         return new LexerContext("", range.startFromNextPosition());
     }
 
-    public LexerContext newChar(Character character) {
+    public LexerContext addChar(Character character) {
         RealInputRange newRange;
         if(character == '\n'){
             newRange = range.moveLine();

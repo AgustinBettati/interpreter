@@ -32,7 +32,7 @@ public class RealInputRange implements InputRange {
     }
 
     public RealInputRange moveLine() {
-        return new RealInputRange(startLine,startColumn,endLine + 1,1);
+        return new RealInputRange(startLine,startColumn,endLine + 1,0);
     }
 
     @Override

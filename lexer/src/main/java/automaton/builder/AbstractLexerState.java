@@ -17,7 +17,6 @@ abstract class AbstractLexerState implements LexerAutomatonState {
     public Token obtainToken() {
         String value = ctx.getAccum();
         InputRange range = ctx.getRange();
-        ctx = ctx.resetAccum();
         return new RealToken(value, range, obtainTokenType());
     }
 

@@ -5,17 +5,19 @@ import token.Token;
 import token.TokenType;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LexerTest {
 
-    Lexer lexer = new RealLexer();
+    private Lexer lexer = new RealLexer();
 
     @Test
-    public void generateIdentifierToken() {
+    public void generateIdentifierTokenAndVerifyRange() {
         final List<Token> tokens = lexer.generateTokens("soyUnIdentifier");
 
         assertEquals(1, tokens.size());
@@ -41,4 +43,76 @@ public class LexerTest {
         assertEquals(3, (int) semiColon.getRange().getStartColumn());
         assertEquals(3, (int) semiColon.getRange().getEndColumn());
     }
+
+    @Test
+    public void generateIdentifierSemiColonAndTypeTokens() {
+        final List<Token> tokens = lexer.generateTokens("id:string");
+
+        assertEquals(3, tokens.size());
+        final Token identifier = tokens.get(0);
+        final Token colon = tokens.get(1);
+        final Token stringType = tokens.get(2);
+        assertSame(TokenType.IDENTIFIER, identifier.getType());
+        assertSame(TokenType.COLON, colon.getType());
+        assertSame(TokenType.STRING_TYPE, stringType.getType());
+        assertEquals("id", identifier.getValue());
+        assertEquals(":", colon.getValue());
+        assertEquals("string", stringType.getValue());
+        assertEquals(2, (int) identifier.getRange().getEndColumn());
+        assertEquals(3, (int) colon.getRange().getEndColumn());
+        assertEquals(4, (int) stringType.getRange().getStartColumn());
+        assertEquals(9, (int) stringType.getRange().getEndColumn());
+    }
+
+    @Test
+    public void simplePrintStatement() {
+        validateTokens("print(variable);",
+                Arrays.asList(
+                        TokenType.PRINT, TokenType.LEFT_PAREN, TokenType.IDENTIFIER, TokenType.RIGHT_PAREN, TokenType.SEMI_COLON
+                ));
+    }
+
+    @Test
+    public void simpleDeclarationStatement() {
+        validateTokens("let pepito: number;",
+                Arrays.asList(
+                TokenType.LET, TokenType.SPACE, TokenType.IDENTIFIER, TokenType.COLON, TokenType.SPACE,
+                TokenType.NUMBER_TYPE, TokenType.SEMI_COLON
+                ));
+    }
+
+    @Test
+    public void printStatementWithAddition() {
+        validateTokens("print(pi+ jorge)",
+                Arrays.asList(
+                TokenType.PRINT, TokenType.LEFT_PAREN, TokenType.IDENTIFIER, TokenType.ADDITION, TokenType.SPACE,
+                TokenType.IDENTIFIER, TokenType.RIGHT_PAREN
+                ));
+    }
+
+    @Test
+    public void testingNewLineAndRanges() {
+        final List<Token> tokens = lexer.generateTokens("print(pi)\nlet num: number;");
+        final Token piIdentifier = tokens.get(2);
+        final Token numIdentifier = tokens.get(7);
+
+
+        assertEquals(12, tokens.size());
+        assertEquals(7, (int) piIdentifier.getRange().getStartColumn());
+        assertEquals(1, (int) piIdentifier.getRange().getStartLine());
+        assertEquals(5, (int) numIdentifier.getRange().getStartColumn());
+        assertEquals(2, (int) numIdentifier.getRange().getStartLine());
+        assertEquals("num", numIdentifier.getValue());
+        assertEquals("pi", piIdentifier.getValue());
+    }
+
+
+    private void validateTokens(String src, List<TokenType> expectedTypes){
+        final List<Token> tokens = lexer.generateTokens(src);
+        final List<TokenType> tokenTypes = tokens.stream().map(Token::getType).collect(Collectors.toList());
+        assertEquals(expectedTypes, tokenTypes);
+
+    }
+
+
 }
