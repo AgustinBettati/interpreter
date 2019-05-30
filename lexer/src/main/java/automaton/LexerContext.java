@@ -6,15 +6,15 @@ import token.RealInputRange;
 
 public class LexerContext {
 
-    private String accum;
-    private RealInputRange range;
+    private final String accum;
+    private final RealInputRange range;
 
     public LexerContext() {
         this.accum = "";
         this.range = new RealInputRange();
     }
 
-    public LexerContext(String accum, RealInputRange range) {
+    private LexerContext(String accum, RealInputRange range) {
         this.accum = accum;
         this.range = range;
     }

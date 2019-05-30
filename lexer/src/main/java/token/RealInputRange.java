@@ -1,15 +1,13 @@
 package token;
 
-import javafx.util.Pair;
-
 public class RealInputRange implements InputRange {
 
-    private Integer startLine;
-    private Integer startColumn;
-    private Integer endLine;
-    private Integer endColumn;
+    private final Integer startLine;
+    private final Integer startColumn;
+    private final Integer endLine;
+    private final Integer endColumn;
 
-    public RealInputRange(Integer startLine, Integer startColumn, Integer endLine, Integer endColumn) {
+    private RealInputRange(Integer startLine, Integer startColumn, Integer endLine, Integer endColumn) {
         this.startLine = startLine;
         this.startColumn = startColumn;
         this.endLine = endLine;

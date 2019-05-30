@@ -4,15 +4,13 @@ import org.junit.jupiter.api.Test;
 import token.Token;
 import token.TokenType;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class LexerTest {
+public class TokenValueAndRangeTest {
 
     private Lexer lexer = new RealLexer();
 
@@ -65,37 +63,10 @@ public class LexerTest {
     }
 
     @Test
-    public void simplePrintStatement() {
-        validateTokens("print(variable);",
-                Arrays.asList(
-                        TokenType.PRINT, TokenType.LEFT_PAREN, TokenType.IDENTIFIER, TokenType.RIGHT_PAREN, TokenType.SEMI_COLON
-                ));
-    }
-
-    @Test
-    public void simpleDeclarationStatement() {
-        validateTokens("let pepito: number;",
-                Arrays.asList(
-                TokenType.LET, TokenType.SPACE, TokenType.IDENTIFIER, TokenType.COLON, TokenType.SPACE,
-                TokenType.NUMBER_TYPE, TokenType.SEMI_COLON
-                ));
-    }
-
-    @Test
-    public void printStatementWithAddition() {
-        validateTokens("print(pi+ jorge)",
-                Arrays.asList(
-                TokenType.PRINT, TokenType.LEFT_PAREN, TokenType.IDENTIFIER, TokenType.ADDITION, TokenType.SPACE,
-                TokenType.IDENTIFIER, TokenType.RIGHT_PAREN
-                ));
-    }
-
-    @Test
     public void testingNewLineAndRanges() {
         final List<Token> tokens = lexer.generateTokens("print(pi)\nlet num: number;");
         final Token piIdentifier = tokens.get(2);
         final Token numIdentifier = tokens.get(7);
-
 
         assertEquals(12, tokens.size());
         assertEquals(7, (int) piIdentifier.getRange().getStartColumn());
@@ -105,14 +76,5 @@ public class LexerTest {
         assertEquals("num", numIdentifier.getValue());
         assertEquals("pi", piIdentifier.getValue());
     }
-
-
-    private void validateTokens(String src, List<TokenType> expectedTypes){
-        final List<Token> tokens = lexer.generateTokens(src);
-        final List<TokenType> tokenTypes = tokens.stream().map(Token::getType).collect(Collectors.toList());
-        assertEquals(expectedTypes, tokenTypes);
-
-    }
-
 
 }
