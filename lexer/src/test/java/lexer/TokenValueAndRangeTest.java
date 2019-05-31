@@ -4,9 +4,7 @@ import org.junit.jupiter.api.Test;
 import token.Token;
 import token.TokenType;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,7 +13,7 @@ public class TokenValueAndRangeTest {
     private Lexer lexer = new RealLexer();
 
     @Test
-    public void generateIdentifierTokenAndVerifyRange() {
+    public void generateIdentifierToken() {
         final List<Token> tokens = lexer.generateTokens("soyUnIdentifier");
 
         assertEquals(1, tokens.size());
@@ -27,7 +25,7 @@ public class TokenValueAndRangeTest {
     }
 
     @Test
-    public void generateIdentifierAndSemiColonTokens() {
+    public void identifierAndSemiColon() {
         final List<Token> tokens = lexer.generateTokens("id;");
 
         assertEquals(2, tokens.size());
@@ -43,7 +41,7 @@ public class TokenValueAndRangeTest {
     }
 
     @Test
-    public void generateIdentifierSemiColonAndTypeTokens() {
+    public void identifierSemiColonAndType() {
         final List<Token> tokens = lexer.generateTokens("id:string");
 
         assertEquals(3, tokens.size());
@@ -63,7 +61,7 @@ public class TokenValueAndRangeTest {
     }
 
     @Test
-    public void testingNewLineAndRanges() {
+    public void newLineWithStatements() {
         final List<Token> tokens = lexer.generateTokens("print(pi)\nlet num: number;");
         final Token piIdentifier = tokens.get(2);
         final Token numIdentifier = tokens.get(7);
@@ -75,6 +73,24 @@ public class TokenValueAndRangeTest {
         assertEquals(2, (int) numIdentifier.getRange().getStartLine());
         assertEquals("num", numIdentifier.getValue());
         assertEquals("pi", piIdentifier.getValue());
+    }
+
+    @Test
+    public void emptyStringAndNumber() {
+        final List<Token> tokens = lexer.generateTokens("\"\" + 430");
+        final Token emptyString = tokens.get(0);
+        final Token number = tokens.get(4);
+        final Token leftSpace = tokens.get(1);
+
+        assertEquals(5, tokens.size());
+        assertEquals(1, (int) emptyString.getRange().getStartColumn());
+        assertEquals(2, (int) emptyString.getRange().getEndColumn());
+        assertEquals(3, (int) leftSpace.getRange().getStartColumn());
+        assertEquals(3, (int) leftSpace.getRange().getEndColumn());
+        assertEquals(8, (int) number.getRange().getEndColumn());
+        assertEquals("\"\"", emptyString.getValue());
+        assertEquals("430", number.getValue());
+        assertEquals(" ", leftSpace.getValue());
     }
 
 }

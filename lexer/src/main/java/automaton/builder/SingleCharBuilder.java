@@ -21,7 +21,7 @@ public class SingleCharBuilder extends AbstractLexerState {
     public LexerAutomatonState next(Character c) {
         //si tengo un char, me mando al helper on el ctx vacio y nuevo char
         //si esta vacio me quedo en el estado guardando el char
-        if(Arrays.asList(';', ':', '\n', '\t', ' ', '=', '+', '-', '*', '/', '(', ')').contains(c)){
+        if(specialChars.contains(c)){
             return new SingleCharBuilder(ctx.resetAccum().addChar(c));
         }
         else {

@@ -2,6 +2,7 @@ package automaton.builder;
 
 import automaton.LexerAutomatonState;
 import automaton.LexerContext;
+import token.Token;
 import token.TokenType;
 
 import java.util.Arrays;
@@ -19,20 +20,7 @@ public class SingleCharHelperState extends AbstractLexerState {
 
     @Override
     public LexerAutomatonState next(Character c) {
-        //en este estado se que no me llega un single char.
-        String currentAccum = ctx.getAccum() + c;
-        if(currentAccum.matches("\\d+")){ //is a number
-            return new AlphaNumericBuilder(ctx.addChar(c)); //TODO levar a NumberLiteral
-        }
-        else if(currentAccum.startsWith("\"")) {
-            return new SingleCharBuilder(ctx.addChar(c)); //TODO llevar a StringLiteral
-        }
-        else if (currentAccum.matches("[A-Za-z0-9]+")) {
-            return new AlphaNumericBuilder(ctx.addChar(c));
-        }
-        else {
-            return new AlphaNumericBuilder(ctx.addChar(c)); //TODO llevar a UNKOWN
-        }
+        return handleNormalCase(c);
     }
 
     @Override
@@ -50,7 +38,9 @@ public class SingleCharHelperState extends AbstractLexerState {
             case "=": return TokenType.ASSIGN;
             case "(": return TokenType.LEFT_PAREN;
             case ")": return TokenType.RIGHT_PAREN;
-            default: return TokenType.UNKOWN;
+            default:
+                if(ctx.getAccum().matches("\\d+")) return TokenType.NUMBER_LITERAL;
+                else return TokenType.UNKOWN;
         }
     }
 }

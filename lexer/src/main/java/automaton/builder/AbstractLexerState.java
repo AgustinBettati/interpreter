@@ -7,9 +7,13 @@ import token.RealToken;
 import token.Token;
 import token.TokenType;
 
+import java.util.Arrays;
+import java.util.List;
+
 abstract class AbstractLexerState implements LexerAutomatonState {
 
-    protected LexerContext ctx;
+    LexerContext ctx;
+    List<Character> specialChars = Arrays.asList(';', ':', '\n', '\t', ' ', '=', '+', '-', '*', '/', '(', ')');
 
     public abstract TokenType obtainTokenType();
 
@@ -20,7 +24,26 @@ abstract class AbstractLexerState implements LexerAutomatonState {
         return new RealToken(value, range, obtainTokenType());
     }
 
-    public AbstractLexerState(LexerContext ctx) {
+    AbstractLexerState handleNormalCase(Character c){
+        String currentAccum = ctx.getAccum() + c;
+        if(specialChars.contains(c)){
+            return new SingleCharBuilder(ctx.resetAccum().addChar(c));
+        }
+        else if(currentAccum.matches("\\d+")){ //is a number
+            return new NumberBuilder(ctx.addChar(c));
+        }
+        else if(currentAccum.startsWith("\"")) {
+            return new StringBuilder(ctx.addChar(c));
+        }
+        else if (currentAccum.matches("[A-Za-z_$][A-Za-z0-9_$]*")) {
+            return new AlphaNumericBuilder(ctx.addChar(c));
+        }
+        else {
+            return new UnknownBuilder(ctx.addChar(c));
+        }
+    }
+
+    AbstractLexerState(LexerContext ctx) {
         this.ctx = ctx;
     }
 }
