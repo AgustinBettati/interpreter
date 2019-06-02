@@ -34,7 +34,8 @@ public class Literal extends Expression {
     }
 
     public String getStringValue() {
-        return value.toString();
+        final String withQuotation = value.toString();
+        return withQuotation.substring(1, withQuotation.length() - 1);
     }
 
     public Double getNumberValue() {

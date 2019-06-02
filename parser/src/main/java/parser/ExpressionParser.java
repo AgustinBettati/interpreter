@@ -1,19 +1,16 @@
 package parser;
 
 import ast.ArithmeticOperation;
-import ast.EmptyNode;
 import ast.Type;
 import ast.expression.ArithmeticExpression;
 import ast.expression.Expression;
 import ast.expression.Identifier;
 import ast.expression.Literal;
-import ast.statement.Statement;
 import errorhandler.ErrorHandler;
 import token.InputRange;
 import token.RealInputRange;
 import token.Token;
 import token.TokenType;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

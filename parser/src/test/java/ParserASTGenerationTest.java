@@ -4,10 +4,10 @@ import ast.PrimitiveType;
 import ast.Program;
 import ast.Type;
 import ast.expression.ArithmeticExpression;
-import ast.expression.Expression;
 import ast.expression.Identifier;
 import ast.expression.Literal;
 import ast.statement.AssignationStatement;
+import ast.statement.DeclarationAssignationStatement;
 import ast.statement.DeclarationStatement;
 import ast.statement.PrintStatement;
 import errorhandler.ErrorAccumulator;
@@ -49,7 +49,7 @@ public class ParserASTGenerationTest {
 
         assertEquals(1,result.getStatements().size());
         assertEquals(Type.STRING, exp.getType());
-        assertEquals("\"hola\"", exp.getStringValue());
+        assertEquals("hola", exp.getStringValue());
     }
 
     @Test
@@ -69,7 +69,7 @@ public class ParserASTGenerationTest {
         assertEquals(ArithmeticOperation.MULTIPLICATION, multiplication.getOperation());
         assertEquals(ArithmeticOperation.DIVISION, division.getOperation());
         assertEquals(Type.STRING, hola.getType());
-        assertEquals("\"hola\"", hola.getStringValue());
+        assertEquals("hola", hola.getStringValue());
     }
 
     @Test
@@ -131,6 +131,21 @@ public class ParserASTGenerationTest {
         assertEquals("pi", identifier.getName());
         assertEquals(Type.NUMBER, number.getType());
         assertEquals(3.14, number.getNumberValue());
+    }
+
+    @Test
+    public void declarationAssignationStatementOfString() {
+        final Program result = (Program) parser.parse("let name : number = \"agustin\";", new ErrorAccumulator());
+        final DeclarationAssignationStatement declareAssign = (DeclarationAssignationStatement) result.getStatements().get(0);
+        final PrimitiveType primitiveType = declareAssign.getType();
+        final Identifier identifier = declareAssign.getIdentifier();
+        final Literal number = (Literal) declareAssign.getExpression();
+
+        assertEquals(1,result.getStatements().size());
+        assertEquals(Type.NUMBER, primitiveType.getType());
+        assertEquals("name", identifier.getName());
+        assertEquals(Type.STRING, number.getType());
+        assertEquals("agustin", number.getStringValue());
     }
 
 
