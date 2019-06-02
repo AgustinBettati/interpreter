@@ -27,4 +27,8 @@ public class PrintStatement extends Statement {
     public List<ASTNode> getChildren() {
         return Collections.singletonList(expressionToPrint);
     }
+
+    public Expression getExpressionToPrint() {
+        return expressionToPrint;
+    }
 }

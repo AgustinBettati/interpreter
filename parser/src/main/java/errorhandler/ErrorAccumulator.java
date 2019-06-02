@@ -16,5 +16,10 @@ public class ErrorAccumulator implements ErrorHandler {
                 ") to (line: "+range.getEndLine()+", col "+range.getEndColumn()+")");
     }
 
+    @Override
+    public void reportViolation(String message) {
+        errors.add(message);
+    }
+
     public List<String> obtainErrors() { return errors;}
 }

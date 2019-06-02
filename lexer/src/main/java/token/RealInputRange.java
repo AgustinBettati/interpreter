@@ -7,7 +7,7 @@ public class RealInputRange implements InputRange {
     private final Integer endLine;
     private final Integer endColumn;
 
-    private RealInputRange(Integer startLine, Integer startColumn, Integer endLine, Integer endColumn) {
+    public RealInputRange(Integer startLine, Integer startColumn, Integer endLine, Integer endColumn) {
         this.startLine = startLine;
         this.startColumn = startColumn;
         this.endLine = endLine;
