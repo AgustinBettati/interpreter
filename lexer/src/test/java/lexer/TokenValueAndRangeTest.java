@@ -18,7 +18,7 @@ public class TokenValueAndRangeTest {
 
         assertEquals(1, tokens.size());
         final Token token = tokens.get(0);
-        assertSame(token.getType(), TokenType.IDENTIFIER);
+        assertSame(TokenType.IDENTIFIER, token.getType());
         assertEquals("soyUnIdentifier", token.getValue());
         assertEquals(1, (int) token.getRange().getStartColumn());
         assertEquals(15, (int) token.getRange().getEndColumn());
@@ -91,6 +91,29 @@ public class TokenValueAndRangeTest {
         assertEquals("\"\"", emptyString.getValue());
         assertEquals("430", number.getValue());
         assertEquals(" ", leftSpace.getValue());
+    }
+
+    @Test
+    public void decimalNumberToken() {
+        final List<Token> tokens = lexer.generateTokens("3.14");
+
+        assertEquals(1, tokens.size());
+        final Token token = tokens.get(0);
+        assertSame(TokenType.NUMBER_LITERAL, token.getType());
+        assertEquals("3.14", token.getValue());
+        assertEquals(1, (int) token.getRange().getStartColumn());
+        assertEquals(4, (int) token.getRange().getEndColumn());
+    }
+
+    @Test
+    public void invalidDecimalNumber() {
+        final List<Token> tokens = lexer.generateTokens("30.14.;");
+
+        assertEquals(2, tokens.size());
+        final Token unkown = tokens.get(0);
+        final Token semiColon = tokens.get(1);
+        assertSame(TokenType.UNKOWN, unkown.getType());
+        assertSame(TokenType.SEMI_COLON, semiColon.getType());
     }
 
 }

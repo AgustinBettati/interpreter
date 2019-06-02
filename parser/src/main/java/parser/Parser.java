@@ -5,5 +5,4 @@ import errorhandler.ErrorHandler;
 
 public interface Parser {
     ASTNode parse(String src, ErrorHandler handler);
-
 }

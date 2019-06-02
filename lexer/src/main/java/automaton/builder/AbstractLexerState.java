@@ -29,7 +29,7 @@ abstract class AbstractLexerState implements LexerAutomatonState {
         if(specialChars.contains(c)){
             return new SingleCharBuilder(ctx.resetAccum().addChar(c));
         }
-        else if(currentAccum.matches("\\d+")){ //is a number
+        else if(currentAccum.matches("[0-9]+(\\.[0-9]*)?")){ //is a number
             return new NumberBuilder(ctx.addChar(c));
         }
         else if(currentAccum.startsWith("\"")) {

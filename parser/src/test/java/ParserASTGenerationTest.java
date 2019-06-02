@@ -1,5 +1,6 @@
 
 import ast.ArithmeticOperation;
+import ast.PrimitiveType;
 import ast.Program;
 import ast.Type;
 import ast.expression.ArithmeticExpression;
@@ -7,6 +8,7 @@ import ast.expression.Expression;
 import ast.expression.Identifier;
 import ast.expression.Literal;
 import ast.statement.AssignationStatement;
+import ast.statement.DeclarationStatement;
 import ast.statement.PrintStatement;
 import errorhandler.ErrorAccumulator;
 import lexer.Lexer;
@@ -93,7 +95,7 @@ public class ParserASTGenerationTest {
         final Program result = (Program) parser.parse("x = 1;", new ErrorAccumulator());
 
         final AssignationStatement assignation = (AssignationStatement) result.getStatements().get(0);
-        final Identifier identifier = (Identifier) assignation.getIdentifier();
+        final Identifier identifier = assignation.getIdentifier();
         final Literal number = (Literal) assignation.getExpression();
 
 
@@ -101,6 +103,34 @@ public class ParserASTGenerationTest {
         assertEquals("x", identifier.getName());
         assertEquals(Type.NUMBER, number.getType());
         assertEquals(1, number.getNumberValue());
+    }
+
+    @Test
+    public void declarationStatement() {
+        final Program result = (Program) parser.parse("let pi: number;", new ErrorAccumulator());
+        final DeclarationStatement declaration = (DeclarationStatement) result.getStatements().get(0);
+        final PrimitiveType primitiveType = declaration.getType();
+        final Identifier identifier = declaration.getIdentifier();
+
+        assertEquals(1,result.getStatements().size());
+        assertEquals(Type.NUMBER, primitiveType.getType());
+        assertEquals("pi", identifier.getName());
+    }
+
+    @Test
+    public void declarationAndAssignationStatementsInTwoLines() {
+        final Program result = (Program) parser.parse("let pi: number;\npi = 3.14;", new ErrorAccumulator());
+        final DeclarationStatement declaration = (DeclarationStatement) result.getStatements().get(0);
+        final AssignationStatement assignation = (AssignationStatement) result.getStatements().get(1);
+        final PrimitiveType primitiveType = declaration.getType();
+        final Identifier identifier = declaration.getIdentifier();
+        final Literal number = (Literal) assignation.getExpression();
+
+        assertEquals(2,result.getStatements().size());
+        assertEquals(Type.NUMBER, primitiveType.getType());
+        assertEquals("pi", identifier.getName());
+        assertEquals(Type.NUMBER, number.getType());
+        assertEquals(3.14, number.getNumberValue());
     }
 
 

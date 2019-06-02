@@ -1,8 +1,12 @@
 package parser;
 
+import ast.ArithmeticOperation;
 import ast.EmptyNode;
+import ast.PrimitiveType;
+import ast.Type;
 import ast.expression.Identifier;
 import ast.statement.AssignationStatement;
+import ast.statement.DeclarationStatement;
 import ast.statement.PrintStatement;
 import ast.statement.Statement;
 import errorhandler.ErrorHandler;
@@ -31,12 +35,31 @@ public class StatementParser {
 //        else if (types.contains(TokenType.LET) && types.contains(TokenType.ASSIGN)){
 //            return parseDeclarationAsignation();
 //        }
-//        else if (types.contains(TokenType.LET)){
-//            return parserDeclaration();
-//        }
+        else if (types.contains(TokenType.LET)){
+            return parseDeclaration(statementTokens);
+        }
         else {
             return parseAssignation(statementTokens);
         }
+    }
+
+    private DeclarationStatement parseDeclaration(List<Token> statement) {
+        if (statement.size() == 4) {
+            final Token let = statement.get(0);
+            final Token identifier = statement.get(1);
+            final Token colon = statement.get(2);
+            final Token type = statement.get(3);
+            if (validateTypes(Arrays.asList(let, identifier, colon),
+                    Arrays.asList(TokenType.LET, TokenType.IDENTIFIER, TokenType.COLON)) &&
+                    (type.getType() == TokenType.STRING_TYPE || type.getType() == TokenType.NUMBER_TYPE)) {
+                return new DeclarationStatement(
+                        getRange(identifier, type),
+                        new PrimitiveType(type.getRange(), fromTokenTypeToLiteralType(type.getType())),
+                        new Identifier(identifier.getRange(), identifier.getValue()));
+            }
+        }
+        handleInvalidStatement(statement);
+        return null;
     }
 
     private AssignationStatement parseAssignation(List<Token> statement) {
@@ -51,6 +74,7 @@ public class StatementParser {
                         new ExpressionParser(errorHandler).parse(statement.subList(2, statement.size())));
             }
         }
+        handleInvalidStatement(statement);
         return null;
     }
 
@@ -66,6 +90,7 @@ public class StatementParser {
                         new ExpressionParser(errorHandler).parse(statement.subList(2, statement.size() - 1)));
             }
         }
+        handleInvalidStatement(statement);
         return null;
     }
 
@@ -79,6 +104,14 @@ public class StatementParser {
         return true;
     }
 
+    private void handleInvalidStatement(List<Token> statement) {
+        errorHandler.reportViolation("[PARSER] Invalid statement", getRange(statement.get(0), statement.get(statement.size()-1)));
+    }
+
+    private Type fromTokenTypeToLiteralType(TokenType type) {
+        if(type == TokenType.STRING_TYPE) return Type.STRING;
+        else return Type.NUMBER;
+    }
 
     private InputRange getRange(Token start, Token end) {
         final InputRange startRange = start.getRange();

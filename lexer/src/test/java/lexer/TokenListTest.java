@@ -84,6 +84,14 @@ public class TokenListTest {
                 ));
     }
 
+    @Test
+    public void assignationStatementOfDecimalNumber() {
+        validateTokens("pi = 3.14;",
+                Arrays.asList(
+                TokenType.IDENTIFIER, TokenType.SPACE, TokenType.ASSIGN, TokenType.SPACE, TokenType.NUMBER_LITERAL, TokenType.SEMI_COLON
+                ));
+    }
+
 
 
     private void validateTokens(String src, List<TokenType> expectedTypes){

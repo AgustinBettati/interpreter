@@ -55,13 +55,6 @@ public class ExpressionParser {
         } else return Optional.empty();
     }
 
-    private ArithmeticOperation fromTokenTypeToArithmeticOperation(TokenType type) {
-        if(type == TokenType.ADDITION) return ArithmeticOperation.ADDITION;
-        else if(type == TokenType.SUBSTRACTION) return ArithmeticOperation.SUBSTRACTION;
-        else if(type == TokenType.MULTIPLICATION) return ArithmeticOperation.MULTIPLICATION;
-        else return ArithmeticOperation.DIVISION;
-    }
-
     private Expression parseIndentifierOrLiteral(List<Token> tokens){
         if(tokens.isEmpty()){
             errorHandler.reportViolation("[PARSER] Expected expression not defined");
@@ -80,6 +73,12 @@ public class ExpressionParser {
         }
     }
 
+    private ArithmeticOperation fromTokenTypeToArithmeticOperation(TokenType type) {
+        if(type == TokenType.ADDITION) return ArithmeticOperation.ADDITION;
+        else if(type == TokenType.SUBSTRACTION) return ArithmeticOperation.SUBSTRACTION;
+        else if(type == TokenType.MULTIPLICATION) return ArithmeticOperation.MULTIPLICATION;
+        else return ArithmeticOperation.DIVISION;
+    }
 
     private InputRange getRange(Token start, Token end) {
         final InputRange startRange = start.getRange();

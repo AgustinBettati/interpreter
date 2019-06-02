@@ -25,6 +25,10 @@ public class NumberBuilder extends AbstractLexerState {
             this.ctx = ctx.addChar(c);
             return this;
         }
+        else if(c =='.' && !ctx.getAccum().contains(".")){
+            this.ctx = ctx.addChar(c);
+            return this;
+        }
         else if(c.toString().matches("[A-Za-z0-9]+") && ctx.getAccum().isEmpty()){
             return new AlphaNumericBuilder(ctx.addChar(c));
         }
@@ -35,6 +39,9 @@ public class NumberBuilder extends AbstractLexerState {
 
     @Override
     public TokenType obtainTokenType() {
+        if(ctx.getAccum().endsWith(".")){
+            return TokenType.UNKOWN;
+        }
         return TokenType.NUMBER_LITERAL;
     }
 }
