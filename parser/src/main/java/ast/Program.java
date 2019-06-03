@@ -17,7 +17,7 @@ public class Program extends TraceableNode {
 
     @Override
     public void accept(ASTVisitor visitor) {
-
+        visitor.visit(this);
     }
 
     @Override

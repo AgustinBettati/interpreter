@@ -6,6 +6,7 @@ import java.util.List;
 public class EmptyNode implements ASTNode {
     @Override
     public void accept(ASTVisitor visitor) {
+        visitor.visit(this);
     }
 
     @Override

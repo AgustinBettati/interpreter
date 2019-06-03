@@ -10,18 +10,17 @@ import java.util.List;
 
 public class Literal extends Expression {
 
-    private final Type type;
-    private final Object value;
+    private final Scalar scalar;
+
 
     public Literal(InputRange range, Type type, Object value) {
         super(range);
-        this.type = type;
-        this.value = value;
+        this.scalar = new Scalar(type, value);
     }
 
     @Override
     public void accept(ASTVisitor visitor) {
-
+        visitor.visit(this);
     }
 
     @Override
@@ -30,15 +29,18 @@ public class Literal extends Expression {
     }
 
     public Type getType() {
-        return type;
+        return scalar.getType();
+    }
+
+    public Scalar getScalar() {
+        return scalar;
     }
 
     public String getStringValue() {
-        final String withQuotation = value.toString();
-        return withQuotation.substring(1, withQuotation.length() - 1);
+        return scalar.getStringValue();
     }
 
     public Double getNumberValue() {
-        return new Double(value.toString());
+        return scalar.getNumberValue();
     }
 }

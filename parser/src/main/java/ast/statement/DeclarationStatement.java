@@ -19,7 +19,7 @@ public class DeclarationStatement extends Statement {
 
     @Override
     public void accept(ASTVisitor visitor) {
-
+        visitor.visit(this);
     }
 
     @Override

@@ -23,7 +23,7 @@ public class ArithmeticExpression extends Expression {
 
     @Override
     public void accept(ASTVisitor visitor) {
-
+        visitor.visit(this);
     }
 
     @Override
