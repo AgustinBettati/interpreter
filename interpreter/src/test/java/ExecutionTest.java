@@ -60,4 +60,26 @@ public class ExecutionTest {
         assertEquals("agustin", msgAccum.getMessages().get(0));
     }
 
+    @Test
+    public void declareAssignArithmeticExpressionOfNumbers() {
+        MessageAccumulator msgAccum = new MessageAccumulator();
+        ErrorHandler errorAcum = new ErrorAccumulator();
+        interpreter.execute("let result:number= 10*2-5;print(result);"
+                ,msgAccum
+                ,errorAcum);
+        assertEquals(1, msgAccum.getMessages().size());
+        assertEquals("15.0", msgAccum.getMessages().get(0));
+    }
+
+    @Test
+    public void concatenationOfStringAndNumbers() {
+        MessageAccumulator msgAccum = new MessageAccumulator();
+        ErrorHandler errorAcum = new ErrorAccumulator();
+        interpreter.execute("let result:string= \"el numero cinco es \" + 5;print(result);"
+                ,msgAccum
+                ,errorAcum);
+        assertEquals(1, msgAccum.getMessages().size());
+        assertEquals("el numero cinco es 5.0", msgAccum.getMessages().get(0));
+    }
+
 }

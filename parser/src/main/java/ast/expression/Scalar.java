@@ -20,8 +20,7 @@ public class Scalar {
     }
 
     public String getStringValue() {
-        final String withQuotation = value.toString();
-        return withQuotation.substring(1, withQuotation.length() - 1);
+        return value.toString();
     }
 
     public Double getNumberValue() {

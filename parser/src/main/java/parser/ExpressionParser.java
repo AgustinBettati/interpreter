@@ -63,7 +63,7 @@ public class ExpressionParser {
         final Token token = tokens.get(0);
         if(token.getType() == TokenType.IDENTIFIER) return new Identifier(token.getRange(), token.getValue());
         else if (token.getType() == TokenType.NUMBER_LITERAL) return new Literal(token.getRange(), Type.NUMBER, token.getValue());
-        else if (token.getType() == TokenType.STRING_LITERAL) return new Literal(token.getRange(), Type.STRING, token.getValue());
+        else if (token.getType() == TokenType.STRING_LITERAL) return new Literal(token.getRange(), Type.STRING, token.getValue().substring(1, token.getValue().length() - 1));
         else {
             errorHandler.reportViolation("[PARSER] Expected expression but found " + token.getValue(),token.getRange());
             return null;
