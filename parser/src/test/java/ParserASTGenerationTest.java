@@ -78,7 +78,7 @@ public class ParserASTGenerationTest {
         final Program result = (Program) parser.parse("print(5*);", handler);
 
         assertEquals("[PARSER] Invalid expression\n" +
-                "Range -> from (line: 1, col: 7) to (line: 1, col 8)", handler.obtainErrors().get(0));
+                "Range -> from (line: 1, col: 7) to (line: 1, col 8)", handler.getErrors().get(0));
     }
 
     @Test
@@ -87,7 +87,7 @@ public class ParserASTGenerationTest {
         final Program result = (Program) parser.parse("print(let);", handler);
 
         assertEquals("[PARSER] Expected expression but found let\n" +
-                "Range -> from (line: 1, col: 7) to (line: 1, col 9)", handler.obtainErrors().get(0));
+                "Range -> from (line: 1, col: 7) to (line: 1, col 9)", handler.getErrors().get(0));
     }
 
     @Test

@@ -5,10 +5,6 @@ import lexer.RealLexer;
 import org.junit.jupiter.api.Test;
 import parser.Parser;
 import parser.RealParser;
-import token.Token;
-import token.TokenType;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -41,5 +37,27 @@ public class ExecutionTest {
         assertEquals("3.14", msgAccum.getMessages().get(0));
     }
 
+    @Test
+    public void declareAssignStatementWithUnmatchingTypes() {
+        MessageAccumulator msgAccum = new MessageAccumulator();
+        ErrorAccumulator errorAcum = new ErrorAccumulator();
+        interpreter.execute("let pi: number = \"hola\";"
+                ,msgAccum
+                ,errorAcum);
+        assertEquals(1, errorAcum.getErrors().size());
+        assertEquals("[PARSER] Expression does not conform to declared type\n" +
+                "Range -> from (line: 1, col: 1) to (line: 1, col 23)", errorAcum.getErrors().get(0));
+    }
+
+    @Test
+    public void declareAssignStatementWithPrint() {
+        MessageAccumulator msgAccum = new MessageAccumulator();
+        ErrorHandler errorAcum = new ErrorAccumulator();
+        interpreter.execute("let name:string=\"agustin\";print(name);"
+                ,msgAccum
+                ,errorAcum);
+        assertEquals(1, msgAccum.getMessages().size());
+        assertEquals("agustin", msgAccum.getMessages().get(0));
+    }
 
 }

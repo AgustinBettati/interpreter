@@ -92,6 +92,14 @@ public class TokenListTest {
                 ));
     }
 
+    @Test
+    public void semiColonAfter() {
+        validateTokens("let name=\"agustin\";print",
+                Arrays.asList(
+                TokenType.LET, TokenType.SPACE, TokenType.IDENTIFIER, TokenType.ASSIGN, TokenType.STRING_LITERAL, TokenType.SEMI_COLON, TokenType.PRINT
+                ));
+    }
+
 
 
     private void validateTokens(String src, List<TokenType> expectedTypes){

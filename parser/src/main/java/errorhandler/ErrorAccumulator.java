@@ -21,5 +21,5 @@ public class ErrorAccumulator implements ErrorHandler {
         errors.add(message);
     }
 
-    public List<String> obtainErrors() { return errors;}
+    public List<String> getErrors() { return errors;}
 }

@@ -18,7 +18,7 @@ public class StringBuilder extends AbstractLexerState {
     @Override
     public LexerAutomatonState next(Character c) {
         if(ctx.getAccum().matches("\"([^\\\\\"]|\\\\\")*\"")){ // el string esta cerrado
-            return new SingleCharHelperState(ctx.resetAccum().addChar(c));
+            return new SingleCharBuilder(ctx.resetAccum().addChar(c));
         }
         else if(!ctx.getAccum().startsWith("\"")){
             return new UnknownBuilder(ctx.addChar(c));

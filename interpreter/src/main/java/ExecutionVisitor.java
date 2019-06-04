@@ -64,7 +64,21 @@ public class ExecutionVisitor implements ASTVisitor {
 
     @Override
     public void visit(DeclarationAssignationStatement declareAssignStatement) {
+        final Identifier identifier = declareAssignStatement.getIdentifier();
+        if(scopeVariables.containsKey(identifier.getName())){
+            handler.reportViolation("[PARSER] Variable was already been declared", declareAssignStatement.getInputRange());
+        }
+        else{
+            declareAssignStatement.getExpression().accept(this);
+            final Scalar value = this.result;
 
+            if(declareAssignStatement.getType().getType() != value.getType()){
+                handler.reportViolation("[PARSER] Expression does not conform to declared type", declareAssignStatement.getInputRange());
+            }
+            else{
+                scopeVariables.put(identifier.getName(), value);
+            }
+        }
     }
 
     @Override
