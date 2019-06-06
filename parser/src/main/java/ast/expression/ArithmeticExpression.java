@@ -3,6 +3,7 @@ package ast.expression;
 import ast.ASTNode;
 import ast.ASTVisitor;
 import ast.ArithmeticOperation;
+import ast.ExpressionVisitor;
 import token.InputRange;
 
 import java.util.Arrays;
@@ -23,6 +24,11 @@ public class ArithmeticExpression extends Expression {
 
     @Override
     public void accept(ASTVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    @Override
+    public void accept(ExpressionVisitor visitor) {
         visitor.visit(this);
     }
 

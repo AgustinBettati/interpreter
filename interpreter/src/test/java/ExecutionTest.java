@@ -45,7 +45,7 @@ public class ExecutionTest {
                 ,msgAccum
                 ,errorAcum);
         assertEquals(1, errorAcum.getErrors().size());
-        assertEquals("[PARSER] Expression does not conform to declared type\n" +
+        assertEquals("[INTERPRETER] Expression does not conform to declared type\n" +
                 "Range -> from (line: 1, col: 1) to (line: 1, col 23)", errorAcum.getErrors().get(0));
     }
 
@@ -81,5 +81,33 @@ public class ExecutionTest {
         assertEquals(1, msgAccum.getMessages().size());
         assertEquals("el numero cinco es 5.0", msgAccum.getMessages().get(0));
     }
+
+    @Test
+    public void invalidMultiplicationOfStringWithNumber() {
+        MessageAccumulator msgAccum = new MessageAccumulator();
+        ErrorAccumulator errorAcum = new ErrorAccumulator();
+        interpreter.execute("let result:number = \"string\" * 5;print(result);"
+                ,msgAccum
+                ,errorAcum);
+        assertEquals(1, errorAcum.getErrors().size());
+        assertEquals("[INTERPRETER] Invalid arithmetic operation for given types\n" +
+                "Range -> from (line: 1, col: 21) to (line: 1, col 32)", errorAcum.getErrors().get(0));
+    }
+
+//    @Test
+//    public void multipleStatementsWithsArithmeticOperations() {
+//        MessageAccumulator msgAccum = new MessageAccumulator();
+//        ErrorAccumulator errorAcum = new ErrorAccumulator();
+//        interpreter.execute("let pepe: string = \"hola\";\n" +
+//                        "let pepito: number;\n" +
+//                        "pepito = 5 * 5 -8;\n" +
+//                        "print(pepito + pepe + \" mundo\");"
+//                ,msgAccum
+//                ,errorAcum);
+//        assertEquals(1, msgAccum.getMessages().size());
+//        assertEquals("17.0hola mundo", msgAccum.getMessages().get(0));
+//    }
+
+
 
 }

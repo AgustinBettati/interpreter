@@ -2,6 +2,7 @@ package ast.expression;
 
 import ast.ASTNode;
 import ast.ASTVisitor;
+import ast.ExpressionVisitor;
 import ast.Type;
 import token.InputRange;
 
@@ -20,6 +21,11 @@ public class Literal extends Expression {
 
     @Override
     public void accept(ASTVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    @Override
+    public void accept(ExpressionVisitor visitor) {
         visitor.visit(this);
     }
 

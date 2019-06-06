@@ -24,14 +24,14 @@ public class ExpressionParser {
     }
 
     public Expression parse(List<Token> tokens) {
-        return tryParsingArithmeticOperationOf(TokenType.ADDITION, tokens).orElse(
-            tryParsingArithmeticOperationOf(TokenType.SUBSTRACTION, tokens).orElse(
-                tryParsingArithmeticOperationOf(TokenType.MULTIPLICATION, tokens).orElse(
-                    tryParsingArithmeticOperationOf(TokenType.DIVISION, tokens).orElse(
-                        parseIndentifierOrLiteral(tokens)
-                    )
+        return tryParsingArithmeticOperationOf(TokenType.ADDITION, tokens).orElseGet(
+                () -> tryParsingArithmeticOperationOf(TokenType.SUBSTRACTION, tokens).orElseGet(
+                        () -> tryParsingArithmeticOperationOf(TokenType.MULTIPLICATION, tokens).orElseGet(
+                                ()-> tryParsingArithmeticOperationOf(TokenType.DIVISION, tokens).orElseGet(
+                                        ()-> parseIndentifierOrLiteral(tokens)
+                                )
+                        )
                 )
-            )
         );
     }
 
