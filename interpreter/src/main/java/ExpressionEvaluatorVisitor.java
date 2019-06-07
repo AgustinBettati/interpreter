@@ -32,14 +32,10 @@ public class ExpressionEvaluatorVisitor implements ExpressionVisitor {
             Scalar leftValue= leftOpt.get();
             Scalar rightValue= rightOpt.get();
             if (leftValue.getType() != rightValue.getType()) {
-                if (operation != ArithmeticOperation.ADDITION) {
+                if (operation != ArithmeticOperation.ADDITION)
                     ctx.reportViolation("[INTERPRETER] Invalid arithmetic operation for given types", arithmeticExpression.getInputRange());
-                } else {
-                    if (leftValue.getType() == Type.STRING)
-                        this.result = Optional.of(new Scalar(Type.STRING, leftValue.getStringValue() + rightValue.getNumberValue()));
-                    else
-                        this.result = Optional.of(new Scalar(Type.NUMBER, leftValue.getNumberValue() + rightValue.getStringValue()));
-                }
+                 else
+                    this.result = Optional.of(new Scalar(Type.STRING, leftValue.getStringValue() + rightValue.getStringValue()));
             } else {
                 if (leftValue.getType() == Type.NUMBER) { //son dos strings
                     switch (operation) {

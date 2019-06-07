@@ -100,7 +100,13 @@ public class TokenListTest {
                 ));
     }
 
-
+    @Test
+    public void printStatementWithStringStartingWithSpace() {
+        validateTokens("print(\" mundo\");",
+                Arrays.asList(
+                TokenType.PRINT, TokenType.LEFT_PAREN, TokenType.STRING_LITERAL, TokenType.RIGHT_PAREN, TokenType.SEMI_COLON
+                ));
+    }
 
     private void validateTokens(String src, List<TokenType> expectedTypes){
         final List<Token> tokens = lexer.generateTokens(src);

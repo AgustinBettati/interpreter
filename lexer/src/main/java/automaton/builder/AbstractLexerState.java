@@ -26,21 +26,16 @@ abstract class AbstractLexerState implements LexerAutomatonState {
 
     AbstractLexerState handleNormalCase(Character c){
         String currentAccum = ctx.getAccum() + c;
-        if(specialChars.contains(c)){
-            return new SingleCharBuilder(ctx.resetAccum().addChar(c));
-        }
-        else if(currentAccum.matches("[0-9]+(\\.[0-9]*)?")){ //is a number
-            return new NumberBuilder(ctx.addChar(c));
-        }
-        else if(currentAccum.startsWith("\"")) {
+        if(currentAccum.startsWith("\""))
             return new StringBuilder(ctx.addChar(c));
-        }
-        else if (currentAccum.matches("[A-Za-z_$][A-Za-z0-9_$]*")) {
+        else if(specialChars.contains(c))
+            return new SingleCharBuilder(ctx.resetAccum().addChar(c));
+        else if(currentAccum.matches("[0-9]+(\\.[0-9]*)?")) //is a number
+            return new NumberBuilder(ctx.addChar(c));
+        else if (currentAccum.matches("[A-Za-z_$][A-Za-z0-9_$]*"))
             return new AlphaNumericBuilder(ctx.addChar(c));
-        }
-        else {
+        else
             return new UnknownBuilder(ctx.addChar(c));
-        }
     }
 
     AbstractLexerState(LexerContext ctx) {

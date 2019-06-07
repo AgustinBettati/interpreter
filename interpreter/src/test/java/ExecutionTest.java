@@ -71,6 +71,10 @@ public class ExecutionTest {
         assertEquals("15.0", msgAccum.getMessages().get(0));
     }
 
+
+
+
+
     @Test
     public void concatenationOfStringAndNumbers() {
         MessageAccumulator msgAccum = new MessageAccumulator();
@@ -94,20 +98,18 @@ public class ExecutionTest {
                 "Range -> from (line: 1, col: 21) to (line: 1, col 32)", errorAcum.getErrors().get(0));
     }
 
-//    @Test
-//    public void multipleStatementsWithsArithmeticOperations() {
-//        MessageAccumulator msgAccum = new MessageAccumulator();
-//        ErrorAccumulator errorAcum = new ErrorAccumulator();
-//        interpreter.execute("let pepe: string = \"hola\";\n" +
-//                        "let pepito: number;\n" +
-//                        "pepito = 5 * 5 -8;\n" +
-//                        "print(pepito + pepe + \" mundo\");"
-//                ,msgAccum
-//                ,errorAcum);
-//        assertEquals(1, msgAccum.getMessages().size());
-//        assertEquals("17.0hola mundo", msgAccum.getMessages().get(0));
-//    }
-
-
+    @Test
+    public void multipleStatementsWithsArithmeticOperations() {
+        MessageAccumulator msgAccum = new MessageAccumulator();
+        ErrorAccumulator errorAcum = new ErrorAccumulator();
+        interpreter.execute("let hola: string = \"hola\";\n" +
+                        "let cuenta: number;\n" +
+                        "cuenta = 5 * 5 -8 / 4;\n" +
+                        "print(cuenta + hola + \" mundo\");"
+                ,msgAccum
+                ,errorAcum);
+        assertEquals(1, msgAccum.getMessages().size());
+        assertEquals("23.0hola mundo", msgAccum.getMessages().get(0));
+    }
 
 }

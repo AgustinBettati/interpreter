@@ -1,6 +1,7 @@
 package ast.expression;
 
 import ast.Type;
+import token.TokenType;
 
 public class Scalar {
     private final Type type;
@@ -9,7 +10,11 @@ public class Scalar {
 
     public Scalar(Type type, Object value){
         this.type = type;
-        this.value = value;
+        if(type == Type.NUMBER)
+            this.value = new Double(value.toString());
+        else
+            this.value = value;
+
         this.isDefined = true;
     }
 
