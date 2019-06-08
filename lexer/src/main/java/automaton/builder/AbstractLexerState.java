@@ -26,7 +26,7 @@ abstract class AbstractLexerState implements LexerAutomatonState {
 
     AbstractLexerState handleNormalCase(Character c){
         String currentAccum = ctx.getAccum() + c;
-        if(currentAccum.startsWith("\""))
+        if(currentAccum.startsWith("\"") || currentAccum.startsWith("\'"))
             return new StringBuilder(ctx.addChar(c));
         else if(specialChars.contains(c))
             return new SingleCharBuilder(ctx.resetAccum().addChar(c));

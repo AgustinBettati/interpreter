@@ -108,6 +108,15 @@ public class TokenListTest {
                 ));
     }
 
+    @Test
+    public void stringLiteralWithSingleQuotation() {
+        validateTokens("let singleQuote: string = 'mundo';",
+                Arrays.asList(
+                TokenType.LET, TokenType.SPACE, TokenType.IDENTIFIER, TokenType.COLON, TokenType.SPACE, TokenType.STRING_TYPE, TokenType.SPACE,
+                        TokenType.ASSIGN, TokenType.SPACE, TokenType.STRING_LITERAL, TokenType.SEMI_COLON
+                ));
+    }
+
     private void validateTokens(String src, List<TokenType> expectedTypes){
         final List<Token> tokens = lexer.generateTokens(src);
         final List<TokenType> tokenTypes = tokens.stream().map(Token::getType).collect(Collectors.toList());

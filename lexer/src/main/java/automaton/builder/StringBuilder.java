@@ -17,10 +17,10 @@ public class StringBuilder extends AbstractLexerState {
 
     @Override
     public LexerAutomatonState next(Character c) {
-        if(ctx.getAccum().matches("\"([^\\\\\"]|\\\\\")*\"")){ // el string esta cerrado
+        if(ctx.getAccum().matches("\"([^\"\\\\]*(\\\\.[^\"\\\\]*)*)\"|\\'([^\\'\\\\]*(\\\\.[^\\'\\\\]*)*)\\'")){ // el string esta cerrado
             return new SingleCharBuilder(ctx.resetAccum().addChar(c));
         }
-        else if(!ctx.getAccum().startsWith("\"")){
+        else if(!ctx.getAccum().startsWith("\"") && !ctx.getAccum().startsWith("\'")){
             return new UnknownBuilder(ctx.addChar(c));
         }
         else{
