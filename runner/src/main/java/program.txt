@@ -1,0 +1,10 @@
+let nombre: string;
+nombre = 'agustin';
+
+let apellido: string = "bettati";
+
+print("nombre completo: " + nombre + " " + apellido);
+
+let nota: number = 7 + 3 * 0.8;
+
+print("nota final: " + nota);

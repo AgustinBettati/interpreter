@@ -48,11 +48,10 @@ public class RealParser implements Parser {
                 generatedStatements.add(provider.obtainParser(statementTokens).parseToStatement(statementTokens));
                 statementTokens = new ArrayList<>();
             }
-            else {
+            else
                 statementTokens.add(token);
-            }
         }
-        if(!statementTokens.isEmpty()) generatedStatements.add(provider.obtainParser(statementTokens).parseToStatement(statementTokens));
+        if(!statementTokens.isEmpty()) handler.reportViolation("[PARSER] Missing semi-colon to end statement", statementTokens.get(statementTokens.size()-1).getRange());
         return new Program(generatedStatements);
     }
 }

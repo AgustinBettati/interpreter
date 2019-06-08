@@ -12,8 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 public class ExecutionTest {
 
     private Lexer lexer = new RealLexer();
-    Parser parser = new RealParser(lexer);
-    Interpreter interpreter = new RealInterpreter(parser);
+    private Parser parser = new RealParser(lexer);
+    private Interpreter interpreter = new RealInterpreter(parser);
 
     @Test
     public void printLiteral() {
@@ -71,10 +71,6 @@ public class ExecutionTest {
         assertEquals("15.0", msgAccum.getMessages().get(0));
     }
 
-
-
-
-
     @Test
     public void concatenationOfStringAndNumbers() {
         MessageAccumulator msgAccum = new MessageAccumulator();
@@ -111,5 +107,18 @@ public class ExecutionTest {
         assertEquals(1, msgAccum.getMessages().size());
         assertEquals("23.0hola mundo", msgAccum.getMessages().get(0));
     }
+
+    @Test
+    public void singleStatementWithNoSemiColon() {
+        MessageAccumulator msgAccum = new MessageAccumulator();
+        ErrorAccumulator errorAcum = new ErrorAccumulator();
+        interpreter.execute("print(5)"
+                ,msgAccum
+                ,errorAcum);
+        assertEquals(1, errorAcum.getErrors().size());
+        assertEquals("[PARSER] Missing semi-colon to end statement\n" +
+                "Range -> from (line: 1, col: 8) to (line: 1, col 8)", errorAcum.getErrors().get(0));
+    }
+
 
 }
