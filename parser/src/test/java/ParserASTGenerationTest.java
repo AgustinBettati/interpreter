@@ -20,12 +20,12 @@ import parser.RealParser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-public class ParserASTGenerationTest {
+class ParserASTGenerationTest {
     private Lexer lexer = new RealLexer();
-    Parser parser = new RealParser(lexer);
+    private Parser parser = new RealParser(lexer);
 
     @Test
-    public void printStatementWithNumberLiteral() {
+    void printStatementWithNumberLiteral() {
         final Program result = (Program) parser.parse("print(5);", new ErrorAccumulator());
 
         final PrintStatement print = (PrintStatement) result.getStatements().get(0);
@@ -40,7 +40,7 @@ public class ParserASTGenerationTest {
     }
 
     @Test
-    public void printStatementWithStringLiteral() {
+    void printStatementWithStringLiteral() {
         final Program result = (Program) parser.parse("print(\"hola\");", new ErrorAccumulator());
 
         final PrintStatement print = (PrintStatement) result.getStatements().get(0);
@@ -53,7 +53,7 @@ public class ParserASTGenerationTest {
     }
 
     @Test
-    public void printStatementWithMultipleArithmeticOperations() {
+    void printStatementWithMultipleArithmeticOperations() {
         final Program result = (Program) parser.parse("print(5 * 5 -8/ 2 + \"hola\");", new ErrorAccumulator());
 
         final PrintStatement print = (PrintStatement) result.getStatements().get(0);
@@ -73,7 +73,7 @@ public class ParserASTGenerationTest {
     }
 
     @Test
-    public void invalidExpressionInsidePrintStatement() {
+    void invalidExpressionInsidePrintStatement() {
         final ErrorAccumulator handler = new ErrorAccumulator();
         final Program result = (Program) parser.parse("print(5*);", handler);
 
@@ -82,7 +82,7 @@ public class ParserASTGenerationTest {
     }
 
     @Test
-    public void reservedWordInsidePrintStatement() {
+    void reservedWordInsidePrintStatement() {
         final ErrorAccumulator handler = new ErrorAccumulator();
         final Program result = (Program) parser.parse("print(let);", handler);
 
@@ -91,7 +91,7 @@ public class ParserASTGenerationTest {
     }
 
     @Test
-    public void assignationStatementOfNumberLiteral() {
+    void assignationStatementOfNumberLiteral() {
         final Program result = (Program) parser.parse("x = 1;", new ErrorAccumulator());
 
         final AssignationStatement assignation = (AssignationStatement) result.getStatements().get(0);
@@ -106,7 +106,7 @@ public class ParserASTGenerationTest {
     }
 
     @Test
-    public void declarationStatement() {
+    void declarationStatement() {
         final Program result = (Program) parser.parse("let pi: number;", new ErrorAccumulator());
         final DeclarationStatement declaration = (DeclarationStatement) result.getStatements().get(0);
         final PrimitiveType primitiveType = declaration.getType();
@@ -118,7 +118,7 @@ public class ParserASTGenerationTest {
     }
 
     @Test
-    public void declarationAndAssignationStatementsInTwoLines() {
+    void declarationAndAssignationStatementsInTwoLines() {
         final Program result = (Program) parser.parse("let pi: number;\npi = 3.14;", new ErrorAccumulator());
         final DeclarationStatement declaration = (DeclarationStatement) result.getStatements().get(0);
         final AssignationStatement assignation = (AssignationStatement) result.getStatements().get(1);
@@ -134,7 +134,7 @@ public class ParserASTGenerationTest {
     }
 
     @Test
-    public void declarationAssignationStatementOfString() {
+    void declarationAssignationStatementOfString() {
         final Program result = (Program) parser.parse("let name : number = \"agustin\";", new ErrorAccumulator());
         final DeclarationAssignationStatement declareAssign = (DeclarationAssignationStatement) result.getStatements().get(0);
         final PrimitiveType primitiveType = declareAssign.getType();
@@ -146,6 +146,20 @@ public class ParserASTGenerationTest {
         assertEquals("name", identifier.getName());
         assertEquals(Type.STRING, number.getType());
         assertEquals("agustin", number.getStringValue());
+    }
+
+    @Test
+    void catchLexerErrorsInMultipleLines() {
+        final ErrorAccumulator errorAccum = new ErrorAccumulator();
+        parser.parse("let na#me : string = \"agustin\";\n jorg# = 5;", errorAccum);
+        assertEquals(4,errorAccum.getErrors().size());
+    }
+
+    @Test
+    void invalidExponentialArithmeticOperation() {
+        final ErrorAccumulator errorAccum = new ErrorAccumulator();
+        parser.parse("let nota: number = 7 + 3 ** 0.8;", errorAccum);
+        assertEquals(2,errorAccum.getErrors().size());
     }
 
 

@@ -29,14 +29,6 @@ public class RealParser implements Parser {
     public ASTNode parse(String src, ErrorHandler handler) {
         List<Token> tokens = lexer.generateTokens(src);
 
-        final List<Token> invalidTokens = tokens.stream()
-                .filter(token -> token.getType() == TokenType.UNKOWN)
-                .collect(Collectors.toList());
-        if(!invalidTokens.isEmpty()){
-            invalidTokens.forEach(token -> handler.reportViolation("[LEXER] Invalid token.", token.getRange()));
-            return new EmptyNode();
-        }
-
         final List<Token> filtered = tokens.stream().filter(token -> token.getType() != TokenType.SPACE && token.getType() != TokenType.TAB
                 && token.getType() != TokenType.NEW_LINE).collect(Collectors.toList());
 

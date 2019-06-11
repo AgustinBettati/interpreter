@@ -1,5 +1,6 @@
 package parser.statement;
 
+import ast.EmptyNode;
 import ast.Type;
 import ast.statement.Statement;
 import errorhandler.ErrorHandler;
@@ -35,6 +36,15 @@ public abstract class AbstractStatementParser implements StatementParser {
 
     void handleInvalidStatement(List<Token> statement) {
         errorHandler.reportViolation("[PARSER] Invalid statement", getRange(statement.get(0), statement.get(statement.size()-1)));
+    }
+
+    void checkForUnkownTokens(List<Token> tokens) {
+        final List<Token> invalidTokens = tokens.stream()
+                .filter(token -> token.getType() == TokenType.UNKOWN)
+                .collect(Collectors.toList());
+        if(!invalidTokens.isEmpty()){
+            invalidTokens.forEach(token -> errorHandler.reportViolation("[LEXER] Invalid token.", token.getRange()));
+        }
     }
 
     Type fromTokenTypeToLiteralType(TokenType type) {

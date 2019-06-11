@@ -8,12 +8,12 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TokenValueAndRangeTest {
+class TokenValueAndRangeTest {
 
     private Lexer lexer = new RealLexer();
 
     @Test
-    public void generateIdentifierToken() {
+    void generateIdentifierToken() {
         final List<Token> tokens = lexer.generateTokens("soyUnIdentifier");
 
         assertEquals(1, tokens.size());
@@ -25,7 +25,7 @@ public class TokenValueAndRangeTest {
     }
 
     @Test
-    public void identifierAndSemiColon() {
+    void identifierAndSemiColon() {
         final List<Token> tokens = lexer.generateTokens("id;");
 
         assertEquals(2, tokens.size());
@@ -41,7 +41,7 @@ public class TokenValueAndRangeTest {
     }
 
     @Test
-    public void identifierSemiColonAndType() {
+    void identifierSemiColonAndType() {
         final List<Token> tokens = lexer.generateTokens("id:string");
 
         assertEquals(3, tokens.size());
@@ -61,7 +61,7 @@ public class TokenValueAndRangeTest {
     }
 
     @Test
-    public void newLineWithStatements() {
+    void newLineWithStatements() {
         final List<Token> tokens = lexer.generateTokens("print(pi)\nlet num: number;");
         final Token piIdentifier = tokens.get(2);
         final Token numIdentifier = tokens.get(7);
@@ -76,7 +76,7 @@ public class TokenValueAndRangeTest {
     }
 
     @Test
-    public void emptyStringAndNumber() {
+    void emptyStringAndNumber() {
         final List<Token> tokens = lexer.generateTokens("\"\" + 430");
         final Token emptyString = tokens.get(0);
         final Token number = tokens.get(4);
@@ -94,7 +94,7 @@ public class TokenValueAndRangeTest {
     }
 
     @Test
-    public void decimalNumberToken() {
+    void decimalNumberToken() {
         final List<Token> tokens = lexer.generateTokens("3.14");
 
         assertEquals(1, tokens.size());
@@ -106,7 +106,7 @@ public class TokenValueAndRangeTest {
     }
 
     @Test
-    public void invalidDecimalNumber() {
+    void invalidDecimalNumber() {
         final List<Token> tokens = lexer.generateTokens("30.14.;");
 
         assertEquals(2, tokens.size());

@@ -18,6 +18,7 @@ public class PrintStatementParser extends AbstractStatementParser {
 
     @Override
     public Statement parseToStatement(List<Token> statement) {
+        checkForUnkownTokens(statement);
         if (statement.size() >= 4) {
             final Token print = statement.get(0);
             final Token leftParen = statement.get(1);

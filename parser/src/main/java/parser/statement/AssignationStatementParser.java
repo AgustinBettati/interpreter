@@ -19,6 +19,7 @@ public class AssignationStatementParser extends AbstractStatementParser {
 
     @Override
     public Statement parseToStatement(List<Token> statement) {
+        checkForUnkownTokens(statement);
         if (statement.size() >= 3) {
             final Token identifier = statement.get(0);
             final Token assign = statement.get(1);

@@ -1,10 +1,15 @@
 let nombre: string;
-nombre = 'agustin';
+nombre = 'Compilers 101';
 
-let apellido: string = "bettati";
+let plataforma: string = "Udemy";
 
-print("nombre completo: " + nombre + " " + apellido);
+print("Nombre: " + nombre + ", plataforma: " + plataforma);
 
-let nota: number = 7 + 3 * 0.8;
+let precioFinal: number;
 
-print("nota final: " + nota);
+let precioInicial: number = 13;
+let descuento: number = 0.5;
+
+precioFinal = precioInicial * descuento + 20;
+
+print("Precio del curso: " + precioFinal);

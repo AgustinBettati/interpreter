@@ -19,6 +19,7 @@ public class DeclarationStatementParser extends AbstractStatementParser {
 
     @Override
     public Statement parseToStatement(List<Token> statement) {
+        checkForUnkownTokens(statement);
         if (statement.size() == 4) {
             final Token let = statement.get(0);
             final Token identifier = statement.get(1);

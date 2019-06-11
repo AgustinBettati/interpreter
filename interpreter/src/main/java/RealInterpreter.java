@@ -13,8 +13,6 @@ public class RealInterpreter implements Interpreter{
     public void execute(String src, MessageEmitter emitter, ErrorHandler handler) {
         ExecutionVisitor visitor = new ExecutionVisitor(emitter, handler);
         final ASTNode astNode = parser.parse(src, handler);
-        //TODO ver si ya hay errores
-        astNode.accept(visitor);
-
+        if(handler.conforms()) astNode.accept(visitor);
     }
 }

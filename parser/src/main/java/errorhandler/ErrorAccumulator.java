@@ -22,4 +22,9 @@ public class ErrorAccumulator implements ErrorHandler {
     }
 
     public List<String> getErrors() { return errors;}
+
+    @Override
+    public boolean conforms() {
+        return errors.isEmpty();
+    }
 }

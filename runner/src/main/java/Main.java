@@ -30,7 +30,7 @@ public class Main {
         }
         else {
             System.out.println("FAILED EXECUTION\n");
-            errorAcum.getErrors().forEach(System.out::println);
+            errorAcum.getErrors().forEach(msg -> System.out.println(msg + "\n"));
         }
     }
 
