@@ -56,6 +56,6 @@ public class LexerAdapter implements Lexer {
     }
 
     private InputRange adaptRange(Range columnRange, Range rowRange) {
-        return new RealInputRange();
+        return new RealInputRange(rowRange.getFirst(), columnRange.getFirst(), rowRange.getSecond(), columnRange.getSecond());
     }
 }
