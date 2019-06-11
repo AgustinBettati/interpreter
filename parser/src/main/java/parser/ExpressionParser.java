@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 public class ExpressionParser {
 
-    private final ErrorHandler errorHandler;
+    private ErrorHandler errorHandler;
 
     public ExpressionParser(ErrorHandler errorHandler) {
         this.errorHandler = errorHandler;
@@ -83,4 +83,7 @@ public class ExpressionParser {
         return new RealInputRange(startRange.getStartLine(), startRange.getStartColumn(), endRange.getEndLine(), endRange.getEndColumn());
     }
 
+    public void setHandler(ErrorHandler handler) {
+        this.errorHandler = handler;
+    }
 }

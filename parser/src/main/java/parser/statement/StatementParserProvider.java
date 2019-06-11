@@ -2,6 +2,7 @@ package parser.statement;
 
 import errorhandler.ErrorAccumulator;
 import errorhandler.ErrorHandler;
+import parser.ExpressionParser;
 import token.Token;
 import token.TokenType;
 
@@ -15,18 +16,21 @@ public class StatementParserProvider {
     private DeclarationAssignationParser declareAssignParser;
     private PrintStatementParser printParser;
     private DeclarationStatementParser declareParser;
+    private ExpressionParser expressionParser;
 
     public StatementParserProvider() {
         ErrorHandler defaultHandler = new ErrorAccumulator();
-        assignParser = new AssignationStatementParser(defaultHandler);
-        declareAssignParser = new DeclarationAssignationParser(defaultHandler);
-        printParser = new PrintStatementParser(defaultHandler);
+        expressionParser = new ExpressionParser(defaultHandler);
+        assignParser = new AssignationStatementParser(defaultHandler, expressionParser);
+        declareAssignParser = new DeclarationAssignationParser(defaultHandler, expressionParser);
+        printParser = new PrintStatementParser(defaultHandler, expressionParser);
         declareParser = new DeclarationStatementParser(defaultHandler);
     }
 
     public void setHandler(ErrorHandler handler) {
         final List<AbstractStatementParser> parsers = Arrays.asList(assignParser, declareAssignParser, printParser, declareParser);
         parsers.forEach(parser -> parser.setHander(handler));
+        expressionParser.setHandler(handler);
     }
 
     public StatementParser obtainParser(List<Token> statementTokens){

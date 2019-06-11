@@ -13,8 +13,11 @@ import java.util.List;
 
 public class AssignationStatementParser extends AbstractStatementParser {
 
-    public AssignationStatementParser(ErrorHandler handler) {
+    private ExpressionParser parser;
+
+    AssignationStatementParser(ErrorHandler handler, ExpressionParser parser) {
         super(handler);
+        this.parser = parser;
     }
 
     @Override
@@ -28,10 +31,10 @@ public class AssignationStatementParser extends AbstractStatementParser {
                 return new AssignationStatement(
                         getRange(identifier, statement.get(statement.size() - 1)),
                         new Identifier(identifier.getRange(), identifier.getValue()),
-                        new ExpressionParser(errorHandler).parse(statement.subList(2, statement.size())));
+                        parser.parse(statement.subList(2, statement.size())));
             }
         }
-        handleInvalidStatement(statement);
+        handleInvalidStatement(getRange(statement.get(0), statement.get(statement.size() -1)));
         return null;
     }
 }

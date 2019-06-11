@@ -6,7 +6,7 @@ import token.TokenType;
 
 public class NumberBuilder extends AbstractLexerState {
 
-    public NumberBuilder(LexerContext ctx) {
+    NumberBuilder(LexerContext ctx) {
         super(ctx);
     }
 

@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
 
 public abstract class AbstractStatementParser implements StatementParser {
 
-    ErrorHandler errorHandler;
+    private ErrorHandler errorHandler;
 
-    public AbstractStatementParser(ErrorHandler handler) {
+    AbstractStatementParser(ErrorHandler handler) {
         this.errorHandler = handler;
     }
 
@@ -34,8 +34,8 @@ public abstract class AbstractStatementParser implements StatementParser {
         return true;
     }
 
-    void handleInvalidStatement(List<Token> statement) {
-        errorHandler.reportViolation("[PARSER] Invalid statement", getRange(statement.get(0), statement.get(statement.size()-1)));
+    void handleInvalidStatement(InputRange range) {
+        errorHandler.reportViolation("[PARSER] Invalid statement", range);
     }
 
     void checkForUnkownTokens(List<Token> tokens) {

@@ -13,7 +13,7 @@ import java.util.List;
 
 public class DeclarationStatementParser extends AbstractStatementParser {
 
-    public DeclarationStatementParser(ErrorHandler handler) {
+    DeclarationStatementParser(ErrorHandler handler) {
         super(handler);
     }
 
@@ -34,7 +34,7 @@ public class DeclarationStatementParser extends AbstractStatementParser {
                         new Identifier(identifier.getRange(), identifier.getValue()));
             }
         }
-        handleInvalidStatement(statement);
+        handleInvalidStatement(getRange(statement.get(0), statement.get(statement.size() -1)));
         return null;
     }
 }

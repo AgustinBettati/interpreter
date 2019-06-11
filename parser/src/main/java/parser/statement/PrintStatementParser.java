@@ -12,8 +12,11 @@ import java.util.List;
 
 public class PrintStatementParser extends AbstractStatementParser {
 
-    public PrintStatementParser(ErrorHandler handler) {
+    private ExpressionParser expressionParser;
+
+    PrintStatementParser(ErrorHandler handler, ExpressionParser parser) {
         super(handler);
+        this.expressionParser = parser;
     }
 
     @Override
@@ -27,10 +30,10 @@ public class PrintStatementParser extends AbstractStatementParser {
                     Arrays.asList(TokenType.PRINT, TokenType.LEFT_PAREN, TokenType.RIGHT_PAREN))) {
                 return new PrintStatement(
                         getRange(print, rightParen),
-                        new ExpressionParser(errorHandler).parse(statement.subList(2, statement.size() - 1)));
+                        expressionParser.parse(statement.subList(2, statement.size() - 1)));
             }
         }
-        handleInvalidStatement(statement);
+        handleInvalidStatement(getRange(statement.get(0), statement.get(statement.size() -1)));
         return null;
     }
 }

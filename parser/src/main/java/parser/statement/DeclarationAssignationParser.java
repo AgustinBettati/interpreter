@@ -14,8 +14,11 @@ import java.util.List;
 
 public class DeclarationAssignationParser extends AbstractStatementParser {
 
-    public DeclarationAssignationParser(ErrorHandler handler) {
+    private ExpressionParser expressionParser;
+
+    DeclarationAssignationParser(ErrorHandler handler, ExpressionParser expressionParser) {
         super(handler);
+        this.expressionParser = expressionParser;
     }
 
     @Override
@@ -34,11 +37,11 @@ public class DeclarationAssignationParser extends AbstractStatementParser {
                         getRange(let, statement.get(statement.size()-1)),
                         new PrimitiveType(type.getRange(), fromTokenTypeToLiteralType(type.getType())),
                         new Identifier(identifier.getRange(), identifier.getValue()),
-                        new ExpressionParser(errorHandler).parse(statement.subList(5, statement.size()))
+                        expressionParser.parse(statement.subList(5, statement.size()))
                 );
             }
         }
-        handleInvalidStatement(statement);
+        handleInvalidStatement(getRange(statement.get(0), statement.get(statement.size() -1)));
         return null;
     }
 }
